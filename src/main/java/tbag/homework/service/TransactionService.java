@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tbag.homework.exception.InvalidActionException;
 import tbag.homework.model.Account;
 import tbag.homework.model.History;
 import tbag.homework.model.User;
@@ -35,8 +36,8 @@ public class TransactionService {
     private final HistoryRepository historyRepository;
 
     @Transactional
-    public double deposit(CashDTO cashDTO) {
-        Account account = accountRepository.findById(cashDTO.getAccountId()).orElseThrow();
+    public double deposit(CashDTO cashDTO) throws InvalidActionException {
+        Account account = accountRepository.findById(cashDTO.getAccountId()).orElseThrow(() -> new InvalidActionException("Account not found."));
 
         account.setBalance(account.getBalance() + cashDTO.getAmount());
         History history = History.builder()
@@ -46,6 +47,30 @@ public class TransactionService {
                 .transactionType(TransactionType.EXTERNAL)
                 .issuerAccount(account)
                 .beneficiaryAccount(account)
+                .build();
+
+        accountRepository.saveAndFlush(account);
+        historyRepository.saveAndFlush(history);
+
+        return account.getBalance();
+    }
+
+    @Transactional
+    public double withdraw(CashDTO cashDTO) throws InvalidActionException {
+        Account account = accountRepository.findById(cashDTO.getAccountId()).orElseThrow();
+
+        if (account.getBalance() < cashDTO.getAmount()) {
+            throw new InvalidActionException("Insufficient funds");
+        }
+
+        account.setBalance(account.getBalance() - cashDTO.getAmount());
+
+        History history = History.builder()
+                .amount(cashDTO.getAmount())
+                .date(LocalDateTime.now())
+                .historyType(HistoryType.WITHDRAWAL)
+                .transactionType(TransactionType.EXTERNAL)
+                .issuerAccount(account)
                 .build();
 
         accountRepository.saveAndFlush(account);

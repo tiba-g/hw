@@ -6,3 +6,12 @@ Content-Type: application/json
   "accountId": "1",
   "amount": 20
 }
+
+### Withdraw
+POST http://localhost:8080/api/transaction/withdraw
+Content-Type: application/json
+
+{
+  "accountId": "1",
+  "amount": 5
+}

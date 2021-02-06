@@ -15,13 +15,12 @@ import tbag.homework.model.enums.HistoryType;
 import tbag.homework.model.enums.TransactionType;
 import tbag.homework.repository.AccountRepository;
 import tbag.homework.repository.HistoryRepository;
-import tbag.homework.repository.UserRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
+import java.time.format.*;
 import java.util.List;
 
 @Slf4j
@@ -29,11 +28,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class TransactionService {
-
-    @PersistenceContext
-    private final EntityManager entityManager;
-
-    private final UserRepository userRepository;
 
     private final AccountRepository accountRepository;
 
@@ -163,8 +157,7 @@ public class TransactionService {
         if (historyType == null) {
             historyTypes.add(HistoryType.DEPOSIT);
             historyTypes.add(HistoryType.WITHDRAWAL);
-        }
-        else {
+        } else {
             historyTypes.add(historyType);
         }
 

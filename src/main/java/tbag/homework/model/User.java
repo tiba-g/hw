@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)

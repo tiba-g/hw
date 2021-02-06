@@ -26,10 +26,10 @@ public class Account {
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
     private User owner;
 
-    @OneToMany(mappedBy = "issuer_account", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "issuerAccount", fetch = FetchType.LAZY)
     private List<History> outgoingHistory;
 
-    @OneToMany(mappedBy = "beneficiary_account", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "beneficiaryAccount", fetch = FetchType.LAZY)
     private List<History> incomingHistory;
 
 }

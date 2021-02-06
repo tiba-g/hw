@@ -1,0 +1,111 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-02-06-crate-database-models
+      author: tbag (generated)
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: hibernate_sequence
+            startValue: 1
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: accountPK
+                  name: id
+                  type: INTEGER
+              - column:
+                  constraints:
+                    nullable: false
+                  name: balance
+                  type: FLOAT8
+              - column:
+                  constraints:
+                    nullable: false
+                  name: owner_id
+                  type: INTEGER
+            tableName: account
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: historyPK
+                  name: id
+                  type: INTEGER
+              - column:
+                  constraints:
+                    nullable: false
+                  name: amount
+                  type: FLOAT8
+              - column:
+                  name: date
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  constraints:
+                    nullable: false
+                  name: history_type
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: transaction_type
+                  type: VARCHAR(255)
+              - column:
+                  name: beneficiary_account_id
+                  type: INTEGER
+              - column:
+                  constraints:
+                    nullable: false
+                  name: issuer_account_id
+                  type: INTEGER
+            tableName: history
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: system_userPK
+                  name: id
+                  type: INTEGER
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+            tableName: system_user
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: account
+            constraintName: FKiq3coad2tuoyq9wqxfi4ihk3f
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: system_user
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: issuer_account_id
+            baseTableName: history
+            constraintName: FKnay4t6rf80q4dmw50adrmanc7
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: account
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: beneficiary_account_id
+            baseTableName: history
+            constraintName: FKsjy46dw6kpl5iwqg0818ygt5v
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: account
+            validate: true
+

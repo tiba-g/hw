@@ -36,11 +36,10 @@ public class History {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issuer_account_id", referencedColumnName = "id", nullable = false)
-    @Column(nullable = false)
     private Account issuerAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "beneficiary_account_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "beneficiary_account_id", referencedColumnName = "id")
     private Account beneficiaryAccount;
 
     private double amount;

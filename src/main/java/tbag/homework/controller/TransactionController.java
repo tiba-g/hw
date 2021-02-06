@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import tbag.homework.exception.InvalidActionException;
 import tbag.homework.model.dto.CashDTO;
+import tbag.homework.model.dto.TransferDTO;
 import tbag.homework.service.TransactionService;
 
 import java.util.NoSuchElementException;
@@ -25,6 +26,11 @@ public class TransactionController {
     @PostMapping(value = "/withdraw")
     public double withdraw(@RequestBody CashDTO cashDTO) throws InvalidActionException {
         return transactionService.withdraw(cashDTO);
+    }
+
+    @PostMapping(value = "/transfer")
+    public double transfer(@RequestBody TransferDTO transferDTO) throws InvalidActionException {
+        return transactionService.transfer(transferDTO);
     }
 
     @ExceptionHandler(NoSuchElementException.class)

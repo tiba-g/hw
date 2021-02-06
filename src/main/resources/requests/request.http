@@ -15,3 +15,13 @@ Content-Type: application/json
   "accountId": "1",
   "amount": 5
 }
+
+### Transfer
+POST http://localhost:8080/api/transaction/transfer
+Content-Type: application/json
+
+{
+  "issuerAccountId": 1,
+  "beneficiaryAccountId": 3,
+  "amount": 5
+}

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 2021-02-06-crate-database-models
+      id: 2021-02-06-01-crate-database-models
       author: tbag (generated)
       changes:
         - createSequence:

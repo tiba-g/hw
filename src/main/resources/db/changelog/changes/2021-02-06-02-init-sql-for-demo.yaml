@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-02-06-02-init-sql-for-demo
+      author: tbag
+      changes:
+        - sql:
+            sql:
+              INSERT INTO system_user (id, name) VALUES (1, 'Kiss Pista');
+              INSERT INTO system_user (id, name) VALUES (2, 'Nagy Anna');
+
+              INSERT INTO account (id, balance, owner_id) VALUES (1, 0, 1);
+              INSERT INTO account (id, balance, owner_id) VALUES (2, 0, 1);
+              INSERT INTO account (id, balance, owner_id) VALUES (3, 0, 2);

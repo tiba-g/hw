@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CashDTO {
 
-    int userId;
     int accountId;
     double amount;
 

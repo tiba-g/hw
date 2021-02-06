@@ -7,8 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tbag.homework.exception.InvalidActionException;
 import tbag.homework.model.Account;
 import tbag.homework.model.History;
-import tbag.homework.model.User;
 import tbag.homework.model.dto.CashDTO;
+import tbag.homework.model.dto.TransactionHistoryDTO;
+import tbag.homework.model.dto.TransactionHistoryWrapperDTO;
 import tbag.homework.model.dto.TransferDTO;
 import tbag.homework.model.enums.HistoryType;
 import tbag.homework.model.enums.TransactionType;
@@ -18,8 +19,10 @@ import tbag.homework.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -123,6 +126,49 @@ public class TransactionService {
         accountRepository.saveAndFlush(beneficiaryAccount);
 
         return issuerAccount.getBalance();
+    }
+
+    @Transactional
+    public TransactionHistoryWrapperDTO getHistory(int accountId, HistoryType historyType) throws InvalidActionException {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new InvalidActionException("Account not found."));
+        List<HistoryType> historyTypes = createFilter(historyType);
+        List<History> histories = historyRepository.selectByIssuerAccountIdAndHistoryType(accountId, historyTypes);
+        List<TransactionHistoryDTO> historyDTOS = convertHistories(histories);
+
+        return new TransactionHistoryWrapperDTO(account.getId(), account.getBalance(), historyDTOS);
+    }
+
+    private List<TransactionHistoryDTO> convertHistories(List<History> histories) {
+        List<TransactionHistoryDTO> result = new ArrayList<>();
+        for (History history : histories) {
+            result.add(convertHistory(history));
+        }
+
+        return result;
+    }
+
+    private TransactionHistoryDTO convertHistory(History history) {
+        return TransactionHistoryDTO.builder()
+                .amount(history.getAmount())
+                .date(history.getDate())
+                .historyType(history.getHistoryType())
+                .transactionType(history.getTransactionType())
+                .issuerName(history.getIssuerAccount().getOwner().getName())
+                .beneficiaryName(history.getBeneficiaryAccount() != null ? history.getBeneficiaryAccount().getOwner().getName() : null)
+                .build();
+    }
+
+    private List<HistoryType> createFilter(HistoryType historyType) {
+        List<HistoryType> historyTypes = new ArrayList<>();
+        if (historyType == null) {
+            historyTypes.add(HistoryType.DEPOSIT);
+            historyTypes.add(HistoryType.WITHDRAWAL);
+        }
+        else {
+            historyTypes.add(historyType);
+        }
+
+        return historyTypes;
     }
 
 }

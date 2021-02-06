@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CashDTO {
+public class TransactionHistoryWrapperDTO {
 
     private int accountId;
-    private double amount;
+    private double currentBalance;
+    private List<TransactionHistoryDTO> transactions;
 
 }

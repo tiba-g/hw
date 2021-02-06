@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TransferDTO {
 
-    int issuerAccountId;
-    int beneficiaryAccountId;
-    double amount;
+    private int issuerAccountId;
+    private int beneficiaryAccountId;
+    private double amount;
 
 }

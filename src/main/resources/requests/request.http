@@ -25,3 +25,12 @@ Content-Type: application/json
   "beneficiaryAccountId": 3,
   "amount": 5
 }
+
+### all history
+GET http://localhost:8080/api/transaction/history/1
+
+### WITHDRAWN history
+GET http://localhost:8080/api/transaction/history/1?historyType=WITHDRAWAL
+
+### DEPOSIT history
+GET http://localhost:8080/api/transaction/history/1?historyType=DEPOSIT

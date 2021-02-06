@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import tbag.homework.exception.InvalidActionException;
 import tbag.homework.model.dto.CashDTO;
+import tbag.homework.model.dto.TransactionHistoryWrapperDTO;
 import tbag.homework.model.dto.TransferDTO;
+import tbag.homework.model.enums.HistoryType;
 import tbag.homework.service.TransactionService;
 
 import java.util.NoSuchElementException;
@@ -31,6 +33,13 @@ public class TransactionController {
     @PostMapping(value = "/transfer")
     public double transfer(@RequestBody TransferDTO transferDTO) throws InvalidActionException {
         return transactionService.transfer(transferDTO);
+    }
+
+    @GetMapping(value = "/history/{accountId}")
+    public TransactionHistoryWrapperDTO history(@PathVariable("accountId") int accountId,
+                                                @RequestParam(value = "historyType", required = false) HistoryType historyType)
+            throws InvalidActionException {
+        return transactionService.getHistory(accountId, historyType);
     }
 
     @ExceptionHandler(NoSuchElementException.class)

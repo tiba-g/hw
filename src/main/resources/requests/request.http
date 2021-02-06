@@ -3,7 +3,7 @@ POST http://localhost:8080/api/transaction/deposit
 Content-Type: application/json
 
 {
-  "userId": "1",
+  "userId": "3",
   "accountId": "1",
   "amount": 20
 }
